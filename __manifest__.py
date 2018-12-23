@@ -3,33 +3,38 @@
     'name': "am_referral_program",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Modulo creado para gestionar el sistema de referidos de audiomedical.
+        """,
 
     'description': """
-        Long description of module's purpose
+
+        ## HISTORICO DE PRODUCTOS REGALADOS
+        Genera un historico de transacciones con el cliente en las que alguno de los productos vendidos tenga un descuento.
+        A mayores cuando un producto tiene asociado un producto de regalo suma al conjunto de productos gratuitos disponibles.
+        
+        ## PRODUCTOS REGALADOS DISPONIBLES
+        Habrá una tabla con los productos que tiene disponibles para llevarse a coste 0.
+        
+        ## PRODUCTOS GRATUITOS ASOCIADOS A OTROS PRODUCTOS
+        Los productos podrán tener asociados otros productos gratuitos. Estos productos
+        se incluirán automáticamente a las facturas a coste 0 junto con el escogido. También actualizará la tabla de productos
+        gratuitos asociados. El objetivo es que si no los entregamos en el momento, en cualquier otro momento podamos hacerlo.
+
     """,
 
-    'author': "My Company",
-    'website': "http://www.yourcompany.com",
+    'author': "Sergio Del Castillo Baranda",
+    'website': "http://www.sergiodelcastillo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/11.0/odoo/addons/base/module/module_data.xml
-    # for the full list
-    'category': 'Uncategorized',
+    'category': 'Sales',
     'version': '0.1',
 
-    # any module necessary for this one to work correctly
-    'depends': ['base'],
+
+    'depends': ['sale'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
+        # 'views/views.xml',
+        # 'views/templates.xml',
     ],
 }
