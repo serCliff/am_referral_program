@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_am_referral_program_am_referral_program,am_referral_program.am_referral_program,model_am_referral_program_am_referral_program,,1,0,0,0
