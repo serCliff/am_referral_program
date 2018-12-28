@@ -1,0 +1,39 @@
+<odoo>
+  <data>
+
+      <!--FORM-->
+      <record model="ir.ui.view" id="product_template_gifts">
+          <field name="name">product.template.files</field>
+          <field name="model">product.template</field>
+          <field name="inherit_id" ref="product.product_template_form_view"/>
+          <field name="arch" type="xml">
+
+              <notebook position="inside">
+                  <page name="free_products" string="Productos Gratis">
+                      <group>
+                          <div class="o_row">
+                              <span>
+                                  Se regalarán estos productos por cada
+                              </span>
+                              <span>
+                                  <field name="gift_rule"/>
+                              </span>
+                          </div>
+                      </group>
+                      <field name="gift_ids">
+                          <tree editable="bottom">
+                              <field name="product_id"/>
+                              <field name="uds"/>
+                              <field name="discount"/>
+                          </tree>
+                      </field>
+                  </page>
+              </notebook>
+          </field>
+      </record>
+
+
+
+  </data>
+</odoo>
+

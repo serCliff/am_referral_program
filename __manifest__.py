@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "am_referral_program",
+    'name': "Programa de Referidos",
 
     'summary': """
         Modulo creado para gestionar el sistema de referidos de audiomedical.
@@ -29,12 +29,14 @@
     'version': '0.1',
 
 
-    'depends': ['sale'],
+    'depends': ['am_personalizations'],
 
-    # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         # 'views/views.xml',
-        # 'views/templates.xml',
+        'views/referral_gifts.xml',
+        'views/res_partner.xml',
+        'views/product_template.xml',
+        'views/sale_order.xml',
     ],
 }

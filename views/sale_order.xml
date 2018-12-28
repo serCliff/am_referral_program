@@ -1,0 +1,26 @@
+<odoo>
+  <data>
+
+      <!--FORM-->
+      <record model="ir.ui.view" id="sale_order_line">
+          <field name="name">sale.order.gifts</field>
+          <field name="model">sale.order</field>
+          <field name="inherit_id" ref="sale.view_order_form"/>
+          <field name="arch" type="xml">
+              <field name="note" position="before">
+                  <div class="o_row">
+                      <span>
+                        <button name="add_gifts" type="object" class="oe_edit_only" string="Añadir Regalos"/>
+                      </span>
+                  </div>
+                  <br/>
+
+              </field>
+          </field>
+      </record>
+
+
+
+  </data>
+</odoo>
+

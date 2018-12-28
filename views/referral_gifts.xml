@@ -1,5 +1,24 @@
 <odoo>
   <data>
+
+
+    <record id="view_wizard_referral_gift" model="ir.ui.view">
+        <field name="name">free.products.historic.simplified.form</field>
+        <field name="model">free.products.historic</field>
+        <field name="arch" type="xml">
+            <form string="Regalos">
+                <group>
+                    <field name="product_id"/>
+                    <field name="uds"/>
+                    <field name="discount" readonly="1"/>
+                </group>
+            </form>
+            <footer>
+                <button string='Guardar' name="action_save" type="object" class="btn-primary"/>
+                <button string="Cancelar" class="btn-default" special="cancel"/>
+            </footer>
+        </field>
+    </record>
     <!-- explicit list view definition -->
     <!--
     <record model="ir.ui.view" id="am_referral_program.list">
