@@ -50,6 +50,3 @@ class FreeProductsHistoric(models.Model):
         partner.set_partner_free_products()
         return id
 
-    @api.multi
-    def action_save(self):
-        return True
