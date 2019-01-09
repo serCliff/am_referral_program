@@ -7,6 +7,7 @@ import pdb
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
+    partner_referred = fields.Many2one("res.partner", "Referidos", related='self')
     referred_by = fields.Many2one("res.partner", "Referido por:")
     referrals_ids = fields.One2many("res.partner", "referred_by", "Referidos")
     gifted = fields.Boolean("Regalado")

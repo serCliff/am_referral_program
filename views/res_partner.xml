@@ -26,8 +26,40 @@
                           icon="fa-list-alt"/>
               </div>
 
+              <field name="function" position="before">
+                  <field name="referred_by"/>
+              </field>
+
               <!--Pilas restantes-->
               <notebook position="inside">
+                  <page name="partner_referrall" string="Referidos">
+                      <field name="referrals_ids" mode="tree,kanban">
+                            <tree delete="false" create="false">
+                                <field name="partner_referred" readonly="True"/>
+                                <field name="gifted" widget="boolean_toggle" groups="am_personalizations.group_manager"/>
+                            </tree>
+                            <form string="Productos Gratuitos">
+                                <group>
+                                    <field name="partner_referred" readonly="True"/>
+                                    <field name="gifted" widget="boolean_toggle" groups="am_personalizations.group_manager"/>
+                                </group>
+                            </form>
+                            <kanban class="o_kanban_mobile">
+                                <field name="partner_referred" readonly="True"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <strong class="o_kanban_record_title"><span><t t-esc="record.partner_referred.value"/></span></strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                  </page>
                   <page name="free_products" string="Productos Gratis">
                         <!--<button name="action_make_gift" type="object" string="Regalo"/>-->
                         <field name="product_ids" mode="tree,kanban" readonly="True">
