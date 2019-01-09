@@ -26,7 +26,8 @@ class FreeProductsHistoric(models.Model):
     datetime = fields.Datetime("Fecha", default=fields.Datetime.now)
 
     partner_related_id = fields.Many2one("res.partner", "Cliente")
-    sale_order_id = fields.Many2one("sale.order", "Pedido Relacionado")
+    sale_order_id = fields.Many2one("sale.order", "Pedido de venta")
+    pos_order_id = fields.Many2one("pos.order", "Ticket")
 
     @api.model
     def create(self, values):
@@ -46,7 +47,7 @@ class FreeProductsHistoric(models.Model):
     @api.multi
     def unlink(self):
         partner = self.partner_related_id
-        id = super(FreeProductsHistoric, self).unlink()
+        returned_value = super(FreeProductsHistoric, self).unlink()
         partner.set_partner_free_products()
-        return id
+        return returned_value
 

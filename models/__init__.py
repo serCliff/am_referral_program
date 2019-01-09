@@ -5,4 +5,4 @@ from . import referral_gifts
 from . import product_template
 from . import sale_order
 from . import stock_picking
-# from . import pos_order
+from . import pos_order

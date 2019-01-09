@@ -4,7 +4,7 @@ from odoo import models, fields, api, _
 import pdb
 
 
-class SaleOrderLine(models.Model):
+class PosOrderLine(models.Model):
     _inherit = "pos.order.line"
 
     made_gift = fields.Boolean(default=False)
@@ -14,54 +14,62 @@ class SaleOrderLine(models.Model):
     def create(self, values):
         vals = super().create(values)
         if not vals.made_gift:
-            vals.order_id.add_gifts()
+            # vals.order_id.add_gifts()
+            vals.order_id.action_create_free_product_historic()
 
         return vals
 
 
-class SaleOrder(models.Model):
+class PosOrder(models.Model):
     _inherit = "pos.order"
 
-    # @api.multi
-    # def action_create_invoice_auto(self):
-    #     """
-    #     Herencia para meter la gestión de los regalos en el momento de crear la factura
-    #     """
-    #     self.ensure_one()
-    #     fph = self.env['free.products.historic']
-    #
-    #     # Recorremos las lineas y vamos actualizando los historicos asociado a cada cliente
-    #     # con sus regalos y descuentos
-    #     for so_line in self.order_line:
-    #         if so_line.discount == 100:
-    #             historic_line = {
-    #                 'sale_order_id': self.id,
-    #                 'partner_related_id': self.partner_id.id,
-    #                 'product_id': so_line.product_id.product_tmpl_id.id,
-    #                 'uds': so_line.product_uom_qty
-    #             }
-    #             if not so_line.made_gift:
-    #                 historic_line['uds'] *= -1
-    #             fph.create(historic_line)
-    #
-    #     return super().action_create_invoice_auto()
+    @api.multi
+    def action_create_free_product_historic(self):
+        """
+        Gestión de los regalos en el momento de crear el ticket del PdV
+        """
+        self.ensure_one()
+        fph = self.env['free.products.historic']
+
+        # Recorremos las lineas y vamos actualizando los historicos asociado a cada cliente
+        # con sus regalos y descuentos
+        if self.partner_id:
+            for so_line in self.lines:
+                if so_line.discount == 100:
+                    historic_line = {
+                        'pos_order_id': self.id,
+                        'partner_related_id': self.partner_id.id,
+                        'product_id': so_line.product_id.product_tmpl_id.id,
+                        'uds': so_line.qty
+                    }
+                    if not so_line.made_gift:
+                        historic_line['uds'] *= -1
+                    fph.create(historic_line)
+
+        return True
 
     @api.multi
     def add_gifts(self):
+        """
+        Añade productos de regalo a los pedidos si se venden desde el punto de venta
+
+        **DESACTIVADO** para activarlo descomentar del create del metodo PosOrderLine
+        :return:
+        """
 
         sol = self.env['pos.order.line']
         self_id = self.id
         pdb.set_trace()
         # Recorremos los productos para averiguar los regalos
-        for line in self.order_line:
+        for line in self.lines:
 
             # Se comprueba que no se hayan introducido los regalos antes
             # También se comprueba que las unidades del producto sean positivas
-            if not line.added_gifts and line.product_uom_qty > 0:
+            if not line.added_gifts and line.qty > 0:
 
                 # Chequeamos la regla de adición que tiene el producto
                 gift_rule = line.product_id.product_tmpl_id.gift_rule
-                qty_gifts = line.product_uom_qty
+                qty_gifts = line.qty
                 if gift_rule == "so":
                     qty_gifts = 1
 
@@ -73,7 +81,7 @@ class SaleOrder(models.Model):
                                     'order_id': self_id,
                                     'product_id': pp_id.id,
                                     'price_unit': pp_id.lst_price,
-                                    'product_uom_qty': new_gift.uds * qty_gifts,
+                                    'qty': new_gift.uds * qty_gifts,
                                     'discount': new_gift.discount,
                                     'made_gift': True,
                                     'added_gifts': True})

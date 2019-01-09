@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Programa de Referidos",
 
@@ -34,9 +33,10 @@
     'data': [
         'security/ir.model.access.csv',
         # 'views/views.xml',
+        'views/referral_gifts.xml',
         'views/res_partner.xml',
         'views/product_template.xml',
         'views/sale_order.xml',
-        'views/referral_gifts.xml',
     ],
 }
+# -*- coding: utf-8 -*-

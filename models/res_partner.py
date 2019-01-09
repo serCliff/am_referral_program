@@ -14,6 +14,7 @@ class ResPartner(models.Model):
     product_historic_ids = fields.One2many("free.products.historic", "partner_related_id",
                                            string="Historico Productos Gratuitos")
 
+
     # @api.one
     @api.multi
     def set_partner_free_products(self):
