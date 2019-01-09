@@ -26,7 +26,6 @@
             </field>
         </record>
 
-
         <record model="ir.ui.view" id="view_wizard_referral_gift">
             <field name="name">free.products.historic.wizard.form</field>
             <field name="model">free.products.historic</field>
@@ -38,12 +37,35 @@
                         <field name="discount" readonly="1"/>
                     </group>
                 </form>
-                <footer>
-                    <button string="Guardar" class="btn-primary" special="save"/>
-                    <button string="Cancelar" class="btn-default" special="cancel"/>
-                </footer>
+                <!--<footer>-->
+                    <!--<button string="Guardar" class="btn-primary" special="save"/>-->
+                    <!--<button string="Cancelar" class="btn-default" special="cancel"/>-->
+                <!--</footer>-->
             </field>
         </record>
+
+        <record model="ir.ui.view" id="form_view_free_historic">
+            <field name="name">free.products.normal.form</field>
+            <field name="model">free.products</field>
+            <field name="arch" type="xml">
+                <form string="Historico de Productos">
+                    <group>
+                        <group>
+                            <separator string="Producto"/>
+                            <field name="product_id"/>
+                            <field name="uds"/>
+                            <field name="discount"/>
+                        </group>
+                        <group>
+                            <separator string="Cliente"/>
+                            <field name="partner_related_id"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
 
 
 <!--TREES-->

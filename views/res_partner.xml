@@ -29,7 +29,7 @@
               <!--Pilas restantes-->
               <notebook position="inside">
                   <page name="free_products" string="Productos Gratis">
-                        <button name="action_make_gift" type="object" string="Regalo"/>
+                        <!--<button name="action_make_gift" type="object" string="Regalo"/>-->
                         <field name="product_ids" readonly="True">
                             <tree  decoration-danger="uds &lt; 0">
                                 <field name="product_id"/>

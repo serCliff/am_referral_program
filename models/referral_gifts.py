@@ -10,7 +10,7 @@ class ReferralGifts(models.Model):
 
     product_id = fields.Many2one("product.template", "Productos", required=True)
     uds = fields.Float("Unidades")
-    discount = fields.Float("Descuento (%)")
+    discount = fields.Float("Descuento (%)", default=100)
     partner_related_id = fields.Many2one("res.partner", "Cliente Asociado")
     product_related_id = fields.Many2one("product.template", "Producto Asociado")
 
