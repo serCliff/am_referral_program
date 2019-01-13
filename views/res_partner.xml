@@ -180,7 +180,7 @@
           <field name="arch" type="xml">
 
               <field name="email" position="after">
-                  <field name="make_gift" invisible="0"/>
+                  <field name="make_gift" invisible="1"/>
               </field>
 
           </field>
