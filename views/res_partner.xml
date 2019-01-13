@@ -37,7 +37,14 @@
                             <tree delete="false" create="false">
                                 <field name="partner_referred" readonly="True"/>
                                 <field name="gifted" widget="boolean_toggle" groups="am_personalizations.group_manager"/>
-                            </tree>
+                                <button name="action_make_gift"
+                                        type="object"
+                                        string="Hacer Regalo"
+                                        class="oe_highlight"
+                                        attrs="{'invisible': [('gifted','=',True)]}"
+                                        groups="am_personalizations.group_manager"/>
+
+                           </tree>
                             <form string="Productos Gratuitos">
                                 <group>
                                     <field name="partner_referred" readonly="True"/>

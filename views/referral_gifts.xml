@@ -35,12 +35,13 @@
                         <field name="product_id"/>
                         <field name="uds"/>
                         <field name="discount" readonly="1"/>
+                        <field name="partner_related_id" invisible="1"/>
                     </group>
                 </form>
-                <!--<footer>-->
-                    <!--<button string="Guardar" class="btn-primary" special="save"/>-->
-                    <!--<button string="Cancelar" class="btn-default" special="cancel"/>-->
-                <!--</footer>-->
+                <footer>
+                    <button name="set_gift" string="Regalar" class="btn-primary" type="object"/>
+                    <button string="Cancelar" class="btn-default" special="cancel"/>
+                </footer>
             </field>
         </record>
 
@@ -246,6 +247,17 @@
                 </p>
             </field>
         </record>
+
+
+        <record id="action_to_gift_wizard" model="ir.actions.act_window">
+            <field name="name">Selecciona un producto</field>
+            <field name="res_model">free.products.historic</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_wizard_referral_gift"/>
+        </record>
+
 
 
 

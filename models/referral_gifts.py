@@ -29,6 +29,24 @@ class FreeProductsHistoric(models.Model):
     sale_order_id = fields.Many2one("sale.order", "Pedido de venta")
     pos_order_id = fields.Many2one("pos.order", "Ticket")
 
+
+
+    @api.multi
+    def set_gift(self):
+        """
+        Busca el partner al que hay que hacerle el regalo
+        Le hace el regalo y lo marca como regalado para que no tenga más regalos.
+        """
+        context = self._context
+        partner_to_gift_id = self.env['res.partner'].browse(context.get('make_gift'))
+
+        check_true = partner_to_gift_id.referrals_ids.filtered(lambda r: r.id == context.get('check_true'))
+        check_true.gifted = True
+
+        return True
+
+
+
     @api.model
     def create(self, values):
         """

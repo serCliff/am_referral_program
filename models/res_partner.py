@@ -57,7 +57,9 @@ class ResPartner(models.Model):
 
     @api.multi
     def action_make_gift(self):
-
+        to_check = self.id
+        to_gift = self._context.get("params").get("id")
+        # import pdb; pdb.set_trace()
         return {
             'name': _('Regalos'),
             'view_type': 'form',
@@ -65,7 +67,7 @@ class ResPartner(models.Model):
             'res_model': 'free.products.historic',
             'view_id': self.env.ref('am_referral_program.view_wizard_referral_gift').id,
             'type': 'ir.actions.act_window',
-            'context': {'default_partner_related_id': self.id },
+            'context': {'default_partner_related_id': to_gift, 'check_true': to_check, 'make_gift': to_gift},
             'target': 'new'
         }
 
