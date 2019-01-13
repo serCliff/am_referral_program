@@ -172,6 +172,37 @@
       </record>
 
 
+      <!--SEARCH FILTERS-->
+      <record model="ir.ui.view" id="res_partner_gift_tree">
+          <field name="name">res.partner.files</field>
+          <field name="model">res.partner</field>
+          <field name="inherit_id" ref="base.view_partner_tree"/>
+          <field name="arch" type="xml">
+
+              <field name="email" position="after">
+                  <field name="make_gift" invisible="0"/>
+              </field>
+
+          </field>
+      </record>
+      <record model="ir.ui.view" id="res_partner_gift_search_filters">
+          <field name="name">res.partner.filters</field>
+          <field name="model">res.partner</field>
+          <field name="inherit_id" ref="base.view_res_partner_filter"/>
+          <field name="arch" type="xml">
+
+              <!-- MAKE GIFTS-->
+              <separator position="after">
+                  <filter name="filter_make_gift" help="Merece regalo" domain="[('make_gift','=',True)]"/>
+                  <separator/>
+              </separator>
+
+
+
+          </field>
+      </record>
+
+
 
 
   </data>
