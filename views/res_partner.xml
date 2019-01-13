@@ -36,7 +36,7 @@
                       <field name="referrals_ids" mode="tree,kanban">
                             <tree delete="false" create="false">
                                 <field name="partner_referred" readonly="True"/>
-                                <field name="gifted" widget="boolean_toggle" groups="am_personalizations.group_manager"/>
+                                <field name="gifted" widget="boolean_toggle" groups="am_personalizations.group_director"/>
                                 <button name="action_make_gift"
                                         type="object"
                                         string="Hacer Regalo"
