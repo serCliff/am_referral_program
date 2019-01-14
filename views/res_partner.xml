@@ -28,6 +28,7 @@
 
               <field name="function" position="before">
                   <field name="referred_by"/>
+                  <field name="readonly_referred_by" invisible="1"/>
               </field>
 
               <!--Pilas restantes-->

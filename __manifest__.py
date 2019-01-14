@@ -25,7 +25,7 @@
     'website': "http://www.sergiodelcastillo.com",
 
     'category': 'Sales',
-    'version': '0.3',
+    'version': '0.4',
 
 
     'depends': ['am_personalizations'],
@@ -35,6 +35,7 @@
         # 'views/views.xml',
         'views/referral_gifts.xml',
         'views/res_partner.xml',
+        'security/res_partner_perm.xml',
         'views/product_template.xml',
         'views/sale_order.xml',
     ],

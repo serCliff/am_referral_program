@@ -1,23 +1,33 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 import pdb
 
 
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    partner_referred = fields.Many2one("res.partner", "Referidos", related='self')
-    referred_by = fields.Many2one("res.partner", "Referido por:")
-    referrals_ids = fields.One2many("res.partner", "referred_by", "Referidos")
-    gifted = fields.Boolean("Regalado")
-    make_gift = fields.Boolean("Tiene regalos disponibles", default=False)
+    partner_referred = fields.Many2one("res.partner", "Referidos", related='self', help="Utilizado para acceder al"
+                                                                                        "referido mediante m2o")
+
+    referred_by = fields.Many2one("res.partner", "Referido por:", help="Cliente que ha traido a esta persona"
+                                                                       "aconsejada por haber trabajado con nostros"
+                                                                       "se le hará un regalo por traer un cliente")
+    readonly_referred_by = fields.Boolean(defautl=False, help="Pone readonly en el referido "
+                                                              "para que no lo puedan cambiar si son comerciales")
+    referrals_ids = fields.One2many("res.partner", "referred_by", "Referidos", help="Conjunto de clientes referidos"
+                                                                                    "por este cliente")
+    gifted = fields.Boolean("Regalado", help="Boleano que indica si se le hizo regalo por traer a un cliente concreto")
+
+    make_gift = fields.Boolean("Tiene regalos disponibles", default=False, help="Se utiliza para saber si un cliente"
+                                                                                "tiene que recibir un regalo por haber"
+                                                                                "traido a alguien a la tienda"
+                                                                                "bajo su recomendación")
+
     product_ids = fields.One2many("free.products", "partner_related_id", string="Productos Gratuitos")
     product_historic_ids = fields.One2many("free.products.historic", "partner_related_id",
                                            string="Historico Productos Gratuitos")
-
-    # TODO: Hacer constrain que referred_by no pueda ser igual que self
-    # TODO: Controlar cuando se borra un referred_by quitarle el regalo al referido
 
     @api.multi
     def set_partner_free_products(self):
@@ -50,16 +60,17 @@ class ResPartner(models.Model):
         fp = self.env['free.products']
         self_id = self.id
 
-        for self_gift in fp.search([('partner_related_id','=', self_id)]):
+        for self_gift in fp.search([('partner_related_id', '=', self_id)]):
             # Si existe un producto igual con el mismo descuento devuelve el id para actualizarlo si es necesario
             if new_gift_id.product_id.id == self_gift.product_id.id and new_gift_id.discount == self_gift.discount:
                 return self_gift
         return False
 
-
-
     @api.model
     def create(self, values):
+
+        values = set_readonly_referred_by(values)
+
         ret = super().create(values)
         if ret.referred_by:
             ret.referred_by.set_make_gift_filter()
@@ -67,10 +78,22 @@ class ResPartner(models.Model):
 
     @api.multi
     def write(self, values):
-        super().write(values)
-        if self.referred_by:
-            self.referred_by.set_make_gift_filter()
-        return True
+
+        values = set_readonly_referred_by(values)
+
+        for partner in self:
+            last_referred = partner.referred_by
+            if 'referred_by' in values and values['referred_by'] == partner.id:
+                raise UserError(_("No puedes poner el propio cliente: %s como referido a si mismo.") % (partner.name,))
+
+            super(ResPartner, partner).write(values)
+
+            # Actualizo el viejo y el nuevo referido
+            if last_referred:
+                last_referred.set_make_gift_filter()
+            if partner.referred_by:
+                partner.referred_by.set_make_gift_filter()
+            return True
 
     @api.multi
     def set_make_gift_filter(self):
@@ -102,3 +125,16 @@ class ResPartner(models.Model):
             'target': 'new'
         }
 
+
+def set_readonly_referred_by(values):
+    """
+    Establece a true o false el readonly del parent para que los comerciales no puedan cambiarlo si está asignado
+    :param values:
+    :return:
+    """
+    if 'referred_by' in values:
+        if values['referred_by']:
+            values['readonly_referred_by'] = True
+        else:
+            values['readonly_referred_by'] = False
+    return values
