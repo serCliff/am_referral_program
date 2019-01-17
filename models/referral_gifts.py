@@ -4,7 +4,6 @@ from odoo import models, fields, api
 import pdb
 
 
-
 class ReferralGifts(models.Model):
     _name = "free.products"
 
@@ -30,7 +29,6 @@ class FreeProductsHistoric(models.Model):
     pos_order_id = fields.Many2one("pos.order", "Ticket")
 
 
-
     @api.multi
     def set_gift(self):
         """
@@ -41,11 +39,11 @@ class FreeProductsHistoric(models.Model):
         partner_to_gift_id = self.env['res.partner'].browse(context.get('make_gift'))
 
         check_true = partner_to_gift_id.referrals_ids.filtered(lambda r: r.id == context.get('check_true'))
-        check_true.gifted = True
+        for partner in check_true:
+            partner.gifted = True
 
-        # Establece el filtro de regalado a true o false
+            # Establece el filtro de regalado a true o false
         partner_to_gift_id.set_make_gift_filter()
-
 
         return True
 
