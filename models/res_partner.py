@@ -113,7 +113,7 @@ class ResPartner(models.Model):
     @api.multi
     def action_make_gift(self):
         to_check = self.id
-        to_gift = self._context.get("params").get("id")
+        to_gift = self.referred_by.id
         return {
             'name': _('Regalos'),
             'view_type': 'form',

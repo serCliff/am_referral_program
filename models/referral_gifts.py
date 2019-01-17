@@ -39,10 +39,9 @@ class FreeProductsHistoric(models.Model):
         partner_to_gift_id = self.env['res.partner'].browse(context.get('make_gift'))
 
         check_true = partner_to_gift_id.referrals_ids.filtered(lambda r: r.id == context.get('check_true'))
-        for partner in check_true:
-            partner.gifted = True
+        check_true.gifted = True
 
-            # Establece el filtro de regalado a true o false
+        # Establece el filtro de regalado a true o false
         partner_to_gift_id.set_make_gift_filter()
 
         return True
