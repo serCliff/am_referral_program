@@ -73,6 +73,8 @@
                                 </templates>
                             </kanban>
                         </field>
+                        <label for="make_gift" groups="am_personalizations.group_director"/>
+                        <field name="make_gift" widget="boolean_toggle" groups="am_personalizations.group_director"/>
                   </page>
                   <page name="free_products" string="Productos Gratis">
                         <!--<button name="action_make_gift" type="object" string="Regalo"/>-->
