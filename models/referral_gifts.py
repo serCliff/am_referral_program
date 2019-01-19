@@ -42,13 +42,14 @@ class FreeProductsHistoric(models.Model):
         Le hace el regalo y lo marca como regalado para que no tenga más regalos.
         """
         context = self._context
-        partner_to_gift_id = self.env['res.partner'].browse(context.get('make_gift'))
+        if 'make_gift' in context:
+            partner_to_gift_id = self.env['res.partner'].browse(context.get('make_gift'))
 
-        check_true = partner_to_gift_id.referrals_ids.filtered(lambda r: r.id == context.get('check_true'))
-        check_true.gifted = True
+            check_true = partner_to_gift_id.referrals_ids.filtered(lambda r: r.id == context.get('check_true'))
+            check_true.gifted = True
 
-        # Establece el filtro de regalado a true o false
-        partner_to_gift_id.set_make_gift_filter()
+            # Establece el filtro de regalado a true o false
+            partner_to_gift_id.set_make_gift_filter()
 
         return True
 

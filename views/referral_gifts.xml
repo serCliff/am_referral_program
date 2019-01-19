@@ -17,10 +17,11 @@
                             <field name="discount" readonly="1"/>
                         </group>
                         <group>
-                            <separator string="Pedido"/>
-                            <field name="pos_order_id"/>
-                            <field name="sale_order_id"/>
-                            <field name="register_type" groups="am_personalization.group_director"/>
+                            <separator string="Relación"/>
+                            <field name="partner_related_id"/>
+                            <field name="pos_order_id" readonly="1"/>
+                            <field name="sale_order_id" readonly="1"/>
+                            <field name="register_type" readonly="1"/>
                         </group>
                     </group>
                 </form>
