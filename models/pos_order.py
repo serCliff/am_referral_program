@@ -34,17 +34,24 @@ class PosOrder(models.Model):
         # Recorremos las lineas y vamos actualizando los historicos asociado a cada cliente
         # con sus regalos y descuentos
         if self.partner_id:
-            for so_line in self.lines:
-                if so_line.discount == 100:
+            for pos_line in self.lines:
+                if pos_line.discount == 100:
                     historic_line = {
                         'pos_order_id': self.id,
+                        'pos_order_line_id': pos_line.id,
                         'partner_related_id': self.partner_id.id,
-                        'product_id': so_line.product_id.product_tmpl_id.id,
-                        'uds': so_line.qty
+                        'product_id': pos_line.product_id.product_tmpl_id.id,
+                        'uds': pos_line.qty,
+                        'register_type': 'auto',
                     }
-                    if not so_line.made_gift:
+                    if not pos_line.made_gift:
                         historic_line['uds'] *= -1
-                    fph.create(historic_line)
+
+                    old_fph = fph.search([('pos_order_line_id', '=', pos_line.id)])
+                    if len(old_fph.ids):
+                        old_fph.write(historic_line)
+                    else:
+                        fph.create(historic_line)
 
         return True
 

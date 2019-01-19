@@ -1,9 +1,9 @@
 <odoo>
   <data>
 
-      <!--FORM-->
+  <!--FORM-->
       <record model="ir.ui.view" id="res_partner_referral_gifts">
-          <field name="name">res.partner.files</field>
+          <field name="name">res.partner.referral</field>
           <field name="model">res.partner</field>
           <field name="inherit_id" ref="base.view_partner_form"/>
           <field name="arch" type="xml">
@@ -35,7 +35,7 @@
               <notebook position="inside">
                   <page name="partner_referrall" string="Referidos">
                       <field name="referrals_ids" mode="tree,kanban">
-                            <tree delete="false" create="false">
+                            <tree delete="false" name="make_domain" create="false">
                                 <field name="partner_referred" readonly="True"/>
                                 <field name="gifted" widget="boolean_toggle" groups="am_personalizations.group_director"/>
                                 <button name="action_make_gift"
@@ -118,10 +118,14 @@
                                 </templates>
                             </kanban>
                         </field>
+                        <button name="action_make_gift" type="object"
+                                string="Hacer Regalo"
+                                context="{'no_referral': True}"
+                                groups="am_personalizations.group_director,am_personalizations.group_manager"/>
                   </page>
                   <page name="free_products_historic" string="Historico" groups="am_personalizations.group_manager">
                         <field name="product_historic_ids" mode="tree,kanban">
-                            <tree editable="bottom" >
+                            <tree editable="bottom" create="false">
                                 <field name="product_id"/>
                                 <field name="uds"/>
                                 <field name="discount"/>
@@ -180,10 +184,23 @@
           </field>
       </record>
 
+  <!--PERMISOS COMERCIAL    -->
+      <record model="ir.ui.view" id="res_partner_referral_commercial_permissions">
+          <field name="name">res.partner.permissions</field>
+          <field name="model">res.partner</field>
+          <field name="inherit_id" ref="res_partner_referral_gifts"/>
+          <field name="groups_id" eval="[(4, ref('am_personalizations.group_commercial'))]"/>
+          <field name="arch" type="xml">
+              <field name="product_ids" position="attributes">
+                  <attribute name="domain">[('uds', '>', 0)]</attribute>
+              </field>
+          </field>
+      </record>
 
-      <!--SEARCH FILTERS-->
+
+  <!--TREE-->
       <record model="ir.ui.view" id="res_partner_gift_tree">
-          <field name="name">res.partner.files</field>
+          <field name="name">res.partner.tree</field>
           <field name="model">res.partner</field>
           <field name="inherit_id" ref="base.view_partner_tree"/>
           <field name="arch" type="xml">
@@ -194,6 +211,9 @@
 
           </field>
       </record>
+
+
+   <!--SEARCH FILTERS-->
       <record model="ir.ui.view" id="res_partner_gift_search_filters">
           <field name="name">res.partner.filters</field>
           <field name="model">res.partner</field>
@@ -202,8 +222,9 @@
 
               <!-- MAKE GIFTS-->
               <separator position="after">
-                  <filter name="filter_make_gift" help="Merece regalo" domain="[('make_gift','=',True)]"/>
-                  <separator/>
+                  <filter name="filter_make_gift" help="Merece regalo" domain="[('make_gift','=',True)]"
+                          groups="am_personalizations.group_manager"/>
+                  <separator groups="am_personalizations.group_manager"/>
               </separator>
 
 

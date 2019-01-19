@@ -26,7 +26,13 @@ class FreeProductsHistoric(models.Model):
 
     partner_related_id = fields.Many2one("res.partner", "Cliente")
     sale_order_id = fields.Many2one("sale.order", "Pedido de venta")
+    sale_order_line_id = fields.Many2one("sale.order.line", "Pedido de venta")
     pos_order_id = fields.Many2one("pos.order", "Ticket")
+    pos_order_line_id = fields.Many2one("pos.order.line", "Linea de Ticket")
+
+    register_type = fields.Selection([('auto', 'Automatico'),('man','Manual')],
+                                     default="man",
+                                     string="Tipo de registro")
 
 
     @api.multi
@@ -36,13 +42,14 @@ class FreeProductsHistoric(models.Model):
         Le hace el regalo y lo marca como regalado para que no tenga más regalos.
         """
         context = self._context
-        partner_to_gift_id = self.env['res.partner'].browse(context.get('make_gift'))
+        if 'make_gift' in context:
+            partner_to_gift_id = self.env['res.partner'].browse(context.get('make_gift'))
 
-        check_true = partner_to_gift_id.referrals_ids.filtered(lambda r: r.id == context.get('check_true'))
-        check_true.gifted = True
+            check_true = partner_to_gift_id.referrals_ids.filtered(lambda r: r.id == context.get('check_true'))
+            check_true.gifted = True
 
-        # Establece el filtro de regalado a true o false
-        partner_to_gift_id.set_make_gift_filter()
+            # Establece el filtro de regalado a true o false
+            partner_to_gift_id.set_make_gift_filter()
 
         return True
 

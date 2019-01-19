@@ -17,9 +17,11 @@
                             <field name="discount" readonly="1"/>
                         </group>
                         <group>
-                            <separator string="Pedido"/>
-                            <field name="pos_order_id"/>
-                            <field name="sale_order_id"/>
+                            <separator string="Relación"/>
+                            <field name="partner_related_id"/>
+                            <field name="pos_order_id" readonly="1"/>
+                            <field name="sale_order_id" readonly="1"/>
+                            <field name="register_type" readonly="1"/>
                         </group>
                     </group>
                 </form>
@@ -166,7 +168,7 @@
             <field name="name">free.products.normal.tree</field>
             <field name="model">free.products</field>
             <field name="arch" type="xml">
-                <tree string="Productos Regalados">
+                <tree string="Productos Regalados" decoration-danger="uds &lt; 0" create="false">
                     <field name="product_id"/>
                     <field name="uds"/>
                     <field name="discount"/>
@@ -190,6 +192,8 @@
                         <filter name="group_product" string="Producto" domain="[]" context="{'group_by':'product_id'}"/>
                         <filter name="group_date" string="Fecha" domain="[]" context="{'group_by':'date'}"/>
                         <filter name="group_partner" string="Cliente" domain="[]" context="{'group_by':'partner_related_id'}"/>
+                        <filter name="group_tick" string="Ticket" domain="[]" context="{'group_by':'pos_order_id'}"/>
+                        <filter name="group_so" string="Pedido" domain="[]" context="{'group_by':'sale_order_id'}"/>
                     </group>
                 </search>
              </field>
@@ -203,6 +207,8 @@
                 <search string="Producto Gratuito">
                     <field name="product_id" string="Producto" filter_domain="[('product_id','ilike',self)]"/>
                     <field name="partner_related_id" string="Cliente" filter_domain="[('partner_related_id','ilike',self)]"/>
+                    <separator/>
+                    <filter name="negative" string="Unidades Negativas" domain="[('uds', '&lt;' ,'0')]"/>
                     <group expand="0" string="Group By">
                         <filter name="group_product" string="Producto" domain="[]" context="{'group_by':'product_id'}"/>
                         <filter name="group_partner" string="Cliente" domain="[]" context="{'group_by':'partner_related_id'}"/>

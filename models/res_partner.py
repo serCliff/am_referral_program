@@ -108,12 +108,20 @@ class ResPartner(models.Model):
         self.make_gift = set_gifted
 
 
-
-
     @api.multi
     def action_make_gift(self):
-        to_check = self.id
-        to_gift = self.referred_by.id
+        """
+        Utilizado para hacer regalos
+        :return:
+        """
+        
+        if 'no_referral' in self._context:
+            context = {'default_partner_related_id': self.id}
+        else:
+            to_gift = self.referred_by.id
+            context = {'default_partner_related_id': to_gift,
+                       'check_true': self.id,
+                       'make_gift': to_gift}
         return {
             'name': _('Regalos'),
             'view_type': 'form',
@@ -121,7 +129,7 @@ class ResPartner(models.Model):
             'res_model': 'free.products.historic',
             'view_id': self.env.ref('am_referral_program.view_wizard_referral_gift').id,
             'type': 'ir.actions.act_window',
-            'context': {'default_partner_related_id': to_gift, 'check_true': to_check, 'make_gift': to_gift},
+            'context': context,
             'target': 'new'
         }
 
