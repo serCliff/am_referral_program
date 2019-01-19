@@ -36,13 +36,19 @@ class SaleOrder(models.Model):
             if so_line.discount == 100:
                 historic_line = {
                     'sale_order_id': self.id,
+                    'sale_order_line_id': so_line.id,
                     'partner_related_id': self.partner_id.id,
                     'product_id': so_line.product_id.product_tmpl_id.id,
-                    'uds': so_line.product_uom_qty
+                    'uds': so_line.product_uom_qty,
+                    'register_type': 'auto',
                 }
                 if not so_line.made_gift:
                     historic_line['uds'] *= -1
-                fph.create(historic_line)
+                old_fph = fph.search([('sale_order_line_id', '=', so_line.id)])
+                if len(old_fph.ids):
+                    old_fph.write(historic_line)
+                else:
+                    fph.create(historic_line)
 
         return super().action_create_invoice_auto()
 

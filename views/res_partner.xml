@@ -3,7 +3,7 @@
 
       <!--FORM-->
       <record model="ir.ui.view" id="res_partner_referral_gifts">
-          <field name="name">res.partner.files</field>
+          <field name="name">res.partner.referral</field>
           <field name="model">res.partner</field>
           <field name="inherit_id" ref="base.view_partner_form"/>
           <field name="arch" type="xml">
@@ -35,7 +35,7 @@
               <notebook position="inside">
                   <page name="partner_referrall" string="Referidos">
                       <field name="referrals_ids" mode="tree,kanban">
-                            <tree delete="false" create="false">
+                            <tree delete="false" name="make_domain" create="false">
                                 <field name="partner_referred" readonly="True"/>
                                 <field name="gifted" widget="boolean_toggle" groups="am_personalizations.group_director"/>
                                 <button name="action_make_gift"
@@ -180,6 +180,20 @@
           </field>
       </record>
 
+  <!--PERMISOS COMERCIAL    -->
+      <record model="ir.ui.view" id="res_partner_referral_commercial_permissions">
+          <field name="name">res.partner.permissions</field>
+          <field name="model">res.partner</field>
+          <field name="inherit_id" ref="res_partner_referral_gifts"/>
+          <field name="groups_id" eval="[(4, ref('am_personalizations.group_commercial'))]"/>
+          <field name="arch" type="xml">
+              <tree name="make_domain" position="attributes">
+                  <attribute name="domain">[('uds', '>', 0)]</attribute>
+              </tree>
+          </field>
+      </record>
+
+
 
       <!--SEARCH FILTERS-->
       <record model="ir.ui.view" id="res_partner_gift_tree">
@@ -202,8 +216,9 @@
 
               <!-- MAKE GIFTS-->
               <separator position="after">
-                  <filter name="filter_make_gift" help="Merece regalo" domain="[('make_gift','=',True)]"/>
-                  <separator/>
+                  <filter name="filter_make_gift" help="Merece regalo" domain="[('make_gift','=',True)]"
+                          groups="am_personalizations.group_manager"/>
+                  <separator groups="am_personalizations.group_manager"/>
               </separator>
 
 

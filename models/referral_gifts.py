@@ -26,7 +26,13 @@ class FreeProductsHistoric(models.Model):
 
     partner_related_id = fields.Many2one("res.partner", "Cliente")
     sale_order_id = fields.Many2one("sale.order", "Pedido de venta")
+    sale_order_line_id = fields.Many2one("sale.order.line", "Pedido de venta")
     pos_order_id = fields.Many2one("pos.order", "Ticket")
+    pos_order_line_id = fields.Many2one("pos.order.line", "Linea de Ticket")
+
+    register_type = fields.Selection([('auto', 'Automatico'),('man','Manual')],
+                                     default="man",
+                                     string="Tipo de registro")
 
 
     @api.multi
