@@ -67,7 +67,8 @@ class FreeProductsHistoric(models.Model):
     @api.multi
     def write(self, values):
         super(FreeProductsHistoric, self).write(values)
-        self.partner_related_id.set_partner_free_products()
+        for partner in self:
+            partner.partner_related_id.set_partner_free_products()
         return True
 
     @api.multi
